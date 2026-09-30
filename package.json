@@ -1,0 +1,16 @@
+{
+  "name": "go-katago-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "围棋网页（玻璃拟态）+ 本机 KataGo 引擎桥接：浏览器通过 GTP 驱动你电脑上的 katago.exe",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["go", "weiqi", "baduk", "katago", "gtp", "glassmorphism"],
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {},
+  "license": "MIT"
+}

@@ -1,0 +1,17 @@
+{
+  "_说明": "把这个文件复制成 engine.json 再改成你自己的路径；不填也能自动探测（引擎通常在 ~/围棋AI 或 ~/Desktop/围棋AI 下）。",
+  "port": 3210,
+  "host": "127.0.0.1",
+  "token": "",
+
+  "katago": "C:\\path\\to\\katago\\katago.exe",
+  "model": "C:\\path\\to\\models\\model.txt.gz",
+  "config": "C:\\path\\to\\katago\\default_gtp.cfg",
+
+  "_探测候选目录": [
+    "C:\\Users\\<你>\\围棋AI"
+  ],
+
+  "numSearchThreads": 8,
+  "startupTimeoutMs": 120000
+}
