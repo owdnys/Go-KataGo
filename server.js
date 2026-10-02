@@ -9,6 +9,7 @@
 
 const http = require('node:http');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 const { spawn } = require('node:child_process');
 const { once } = require('node:events');
@@ -16,8 +17,13 @@ const { once } = require('node:events');
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, 'public');
 const CONFIG_PATH = path.join(ROOT, 'engine.json');
-const RUN_DIR = path.join(ROOT, 'engine-run');
 const LOG_FILE = path.join(ROOT, 'logs', 'server.log');
+
+// 引擎的工作目录放在用户数据目录下，**故意不放在工程目录里**：
+// Windows 上只要某个进程把文件夹当作工作目录，整个文件夹就会被锁住（无法移动/改名）。
+// 放到 %LOCALAPPDATA%\go-katago-web 后，服务运行中也能随意移动工程文件夹。
+const DATA_DIR = path.join(process.env.LOCALAPPDATA || os.tmpdir(), 'go-katago-web');
+const RUN_DIR = path.join(DATA_DIR, 'engine-run');
 
 fs.mkdirSync(RUN_DIR, { recursive: true });
 fs.mkdirSync(path.join(ROOT, 'logs'), { recursive: true });

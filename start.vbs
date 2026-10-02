@@ -8,7 +8,9 @@ Set fso = CreateObject("Scripting.FileSystemObject")
 Set sh  = CreateObject("WScript.Shell")
 
 dir = fso.GetParentFolderName(WScript.ScriptFullName)
-sh.CurrentDirectory = dir
+' 关键：把 Node 的工作目录设到 TEMP，且用绝对路径启动 server.js。
+' 否则进程会把工程文件夹当作工作目录锁住，导致文件夹无法移动/改名。
+sh.CurrentDirectory = sh.ExpandEnvironmentStrings("%TEMP%")
 
 ' Already running? then just open the browser and leave.
 If ServiceUp(3210) Then
@@ -18,7 +20,7 @@ End If
 
 ' Start the bridge (hidden). server.js opens the browser itself once listening.
 On Error Resume Next
-sh.Run "node server.js", 0, False
+sh.Run "node """ & dir & "\server.js""", 0, False
 On Error GoTo 0
 
 ' Wait up to ~20s for the service to answer (port may shift if 3210 is taken).
