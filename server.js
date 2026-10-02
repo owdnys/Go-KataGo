@@ -693,6 +693,9 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Go-Token');
   res.setHeader('Access-Control-Max-Age', '86400');
+  // Chrome/Edge 的 Private Network Access：公网页面(https)访问本机(http)服务，
+  // 必须由服务端显式允许，否则会在预检阶段被浏览器拦掉
+  res.setHeader('Access-Control-Allow-Private-Network', 'true');
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();

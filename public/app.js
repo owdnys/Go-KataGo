@@ -1396,8 +1396,9 @@ function enterOfflineMode() {
   $('engineNote').innerHTML =
     '<b>未连接 KataGo 引擎</b><br>' +
     '这个页面本身只是棋盘，AI 由你电脑上的 <code>katago.exe</code> 提供。<br>' +
-    '· 在自己电脑上：双击桌面「围棋（KataGo）」图标即可自动连上<br>' +
-    '· 在公网页面上：点顶部状态条，填入引擎地址';
+    '① 确认本机引擎在跑：双击桌面的「围棋（KataGo）」图标<br>' +
+    '② <b>浏览器弹出「是否允许访问本地网络设备」时请点“允许”</b>，公网页面才能连上你电脑的引擎<br>' +
+    '③ 也可以点顶部状态条，手动填写引擎地址';
   newGame({});
   openEngineModal(true);
 }
