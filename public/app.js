@@ -1364,19 +1364,21 @@ async function boot() {
   requestAnimationFrame(() => moveTabSlider());
   setTimeout(() => moveTabSlider(), 350);     // 字体/布局稳定后再校正一次滑块
 
-  // ---- 找到引擎：先试同源（本机打开），再试保存过的远端地址 ----
-  let found = await probeEngine('', state.engineToken);
-  let usedBase = '';
-  if (!found && state.engineBase) {
-    found = await probeEngine(state.engineBase, state.engineToken);
-    usedBase = state.engineBase;
-  }
+  // ---- 找引擎：同源 → 本机常用端口（公网页面也能连回这台电脑）→ 上次保存的远端地址 ----
+  // http://127.0.0.1 属于"安全上下文"，https 页面请求它不会被浏览器的混合内容策略拦掉
+  const candidates = ['', 'http://127.0.0.1:3210', 'http://127.0.0.1:3211', 'http://localhost:3210'];
+  if (state.engineBase) candidates.push(state.engineBase);
 
-  if (!found) { enterOfflineMode(); return; }
+  const probes = await Promise.all(candidates.map(async (base) => ({
+    base, status: await probeEngine(base, state.engineToken),
+  })));
+  const hit = probes.find((p) => p.status);
 
-  state.engineBase = usedBase;
+  if (!hit) { enterOfflineMode(); return; }
+
+  state.engineBase = hit.base;
   state.offline = false;
-  onEngineStatus(found);
+  onEngineStatus(hit.status);
   connectSSE();
   await newGame({});
 }
